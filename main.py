@@ -1,6 +1,8 @@
 import os
 from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers.string import StrOutputParser
 from langchain_openai import ChatOpenAI
+#from langchain_ollama import ChatOllama
 
 print("\n\n\n\n")
 
@@ -26,9 +28,10 @@ summaryTemplate="""
 
 summaryPromptTemplate = PromptTemplate(input_variables=["information"], template=summaryTemplate)
 
-LLM = ChatOpenAI(temperature=1.5, model_name="gpt-3.5-turbo")
+LLM = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+#LLM = ChatOllama(model_name="llama3")
 
-chain = summaryPromptTemplate | LLM
+chain = summaryPromptTemplate | LLM | StrOutputParser()
 
 res = chain.invoke(input={"information": information})
 
